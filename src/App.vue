@@ -1,26 +1,36 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+<div class="container">
+  <MainHeading msg="Todo App"/>
+  <AddInput/>
+</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import MainHeading from './components/MainHeading.vue'
+import AddInput from './components/AddInput.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    MainHeading,
+    AddInput
   }
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  font-size: 18px;
 }
+.container{
+  max-width: 800px;
+  margin: auto;
+}
+
+
 </style>
