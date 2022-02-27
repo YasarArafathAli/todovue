@@ -6,10 +6,10 @@
 
         </form>
         <ul>
-            <div class="todoItem" v-for='(todo,index) in todoList' :key ='index'>
-                <div class='title'>
+            <div class="todoItem" v-for='(todo,index) in todoList' :key ='index' :id='index'>
+                <div class='title' >
                  <span :class="{ 'task-done': todo.isCompleted }">
-                     <strong>{{todo.title}}</strong>
+                     <strong>{{capitalize(todo.title)}}</strong>
             </span>
                 
                 </div>
@@ -38,11 +38,10 @@ export default {
             todoList: []
         }
     },
-    created() {
+    mounted() {
     if (localStorage.getItem('todoList')) {
       try { 
         this.todoList = JSON.parse(localStorage.getItem('todoList'));
-        console.log(this.todoList)
       } catch(e) {
         localStorage.removeItem('todoList');
       }
@@ -63,21 +62,27 @@ export default {
             this.saveLocal()
         },
         completeTodo: function (index) {
-            this.todoList[index].isCompleted = !this.todoList[index].isCompleted
+            this.todoList[index].isCompleted = !this.todoList[index].isCompleted;
+            this.saveLocal();
         },
         editTodo: function (index) {
             this.todo = this.todoList[index].title;
-            this.todoList = this.todoList.filter((todo, ind) => ind == this.index);
+            this.todoList.splice(index,1);
+            this.saveLocal();
         },
-        deleteTodo : function () {
-            this.todoList = this.todoList.filter((todo, ind) => ind == this.index);
+        deleteTodo : function (index) {
+            this.todoList.splice(index,1);
+            this.saveLocal();
         },
         saveLocal : function(){
             const listString = JSON.stringify(this.todoList);
-            localStorage.setItem('TodoList', listString);
+            localStorage.setItem('todoList', listString);
         },
         clearTodo : function () {
             this.todoList = [];
+        },
+        capitalize: function (str) {
+            return str.charAt(0).toUpperCase() + str.slice(1); 
         }
     }
 }
@@ -104,6 +109,7 @@ export default {
         color:#d62828;
     }
     .todoItem .title{
+        flex-grow: 3;
         width: 55%;
         margin: 16px;
         text-align: left;
@@ -113,6 +119,9 @@ export default {
         width: 100px;
         font-size: 14px;
         padding: 5px;
+    }
+    .todoItem .controls{
+        margin: 16px;
     }
     .item-icon {
         font-size: 1.2rem;
@@ -135,9 +144,7 @@ export default {
         background:#25c060;
         color: #232323;
     }
-    .controls{
-        margin: 16px;
-    }
+    
 
     .controls a{
         padding: 0 10px;
