@@ -8,18 +8,27 @@
         <ul>
             <div class="todoItem" v-for='(todo,index) in todoList' :key ='index' :id='index'>
                 <div class='title' >
-                 <span :class="{ 'task-done': todo.isCompleted }">
+                 <span :class="{ 'task-done': todo.status == 'Completed','inprogress': todo.status == 'In Progress' }">
                      <strong>{{capitalize(todo.title)}}</strong>
             </span>
                 
                 </div>
                 <div class='status' >
-                    <p :class="{'completed' : todo.isCompleted,'incomplete':!todo.isCompleted}">{{todo.isCompleted? "Completed" : "Incomplete"}}</p>
+                    <p :class="{'completed' : todo.status == 'Completed','incomplete': todo.status == 'Incomplete','inprogress' : todo.status == 'In Progress'}">{{todo.status}}</p>
                 </div>
                 <div class='controls'>
-                    <a href="#" class="complete-item item-icon" @click="completeTodo(index)"><i class="far fa-check-circle"></i></a>
-       <a href="#" class="edit-item item-icon" @click="editTodo(index)"><i class="far fa-edit"></i></a>
-       <a href="#" class="delete-item item-icon" @click="deleteTodo(index)"><i class="far fa-times-circle"></i></a>
+                    <a href="#" class="complete-item item-icon" @click="completeTodo(index)">
+                        <i v-if = "todo.status == 'In Progress'" class="fas fa-check" ></i>
+                        <i v-else-if = "todo.status == 'Incomplete'" class="fas fa-play" ></i>
+                        <i v-else class="fas fa-undo" ></i>
+
+                    </a>
+       <a href="#" class="edit-item item-icon" @click="editTodo(index)">
+           <i class="far fa-edit"></i>
+           </a>
+       <a href="#" class="delete-item item-icon" @click="deleteTodo(index)">
+           <i class="far fa-times-circle"></i>
+           </a>
                 </div>
                 </div>
 
@@ -55,14 +64,24 @@ export default {
             }
             let todo = {
                 title: this.todo,
-                isCompleted: false, 
+                status: 'Incomplete'
             }
             this.todoList.push(todo);
             this.todo = '';
             this.saveLocal()
         },
         completeTodo: function (index) {
-            this.todoList[index].isCompleted = !this.todoList[index].isCompleted;
+            if (this.todoList[index].status == 'Incomplete') {
+                this.todoList[index].status = "In Progress";
+            }
+            else if(this.todoList[index].status == 'In Progress'){
+                this.todoList[index].status = "Completed";
+
+            }
+            else{
+                this.todoList[index].status = "Incomplete";
+            }
+
             this.saveLocal();
         },
         editTodo: function (index) {
@@ -107,6 +126,9 @@ export default {
     }
     .incomplete{
         color:#d62828;
+    }
+    .inprogress{
+        color:#0300b1;
     }
     .todoItem .title{
         flex-grow: 3;
@@ -162,6 +184,7 @@ export default {
         width: 80%;
         border-top-right-radius: 0px;
         border-bottom-right-radius: 0px;
+        border-right: none;
     }
     input[type='submit']{
         width: 12%;

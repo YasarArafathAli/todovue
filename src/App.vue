@@ -24,7 +24,7 @@ export default {
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 20px;
   font-size: 18px;
 }
 .container{

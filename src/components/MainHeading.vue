@@ -21,9 +21,10 @@ body {
 }
 h1 {
   font-family: 'Permanent Marker',cursive;
-  letter-spacing: 2px;
-  margin: 40px 0 0;
-  font-size: 50px;
+  letter-spacing: 5px;
+  margin: 0 0 20px;
+  font-size: 60px;
+  color: #349f4b;
 }
 ul {
   list-style-type: none;
