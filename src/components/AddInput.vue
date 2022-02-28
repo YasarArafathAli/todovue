@@ -8,7 +8,12 @@
         <ul>
             <div class="todoItem" v-for='(todo,index) in todoList' :key ='index' :id='index'>
                 <div class='title' >
-                 <span :class="{ 'task-done': todo.status == 'Completed','inprogress': todo.status == 'In Progress' }">
+                <span v-if='todo.edit'>
+                    <form @submit='updateTodo(index,todo.title)'>
+                    <input type='text' class='editInput' v-model='todo.title'  placeholder="Add Todo.."/>
+                    </form>
+                    </span>
+                 <span v-else :class="{ 'task-done': todo.status == 'Completed','inprogress': todo.status == 'In Progress' }">
                      <strong>{{capitalize(todo.title)}}</strong>
             </span>
                 
@@ -21,7 +26,6 @@
                         <i v-if = "todo.status == 'In Progress'" class="fas fa-check" ></i>
                         <i v-else-if = "todo.status == 'Incomplete'" class="fas fa-play" ></i>
                         <i v-else class="fas fa-undo" ></i>
-
                     </a>
        <a href="#" class="edit-item item-icon" @click="editTodo(index)">
            <i class="far fa-edit"></i>
@@ -64,7 +68,8 @@ export default {
             }
             let todo = {
                 title: this.todo,
-                status: 'Incomplete'
+                status: 'Incomplete',
+                edit: false
             }
             this.todoList.push(todo);
             this.todo = '';
@@ -85,8 +90,12 @@ export default {
             this.saveLocal();
         },
         editTodo: function (index) {
-            this.todo = this.todoList[index].title;
-            this.todoList.splice(index,1);
+            this.todoList[index].edit = !this.todoList[index].edit;
+            this.saveLocal();
+        },
+        updateTodo: function (index,todoName){
+            this.todoList[index].title = todoName;
+            this.todoList[index].edit = !this.todoList[index].edit;     
             this.saveLocal();
         },
         deleteTodo : function (index) {
@@ -167,7 +176,11 @@ export default {
         color: #232323;
     }
     
-
+    .editInput{
+        width:50%;
+        border: none;
+    }
+    
     .controls a{
         padding: 0 10px;
     }
